@@ -2,19 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class BallPaddleManager : MonoBehaviour
 {
-    public string playerName;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public static BallPaddleManager Instance;
 
-    // Update is called once per frame
-    void Update()
+    public static string playerName;
+
+    // Sigleton class that destroys other instance if they there are.
+    private void Awake()
     {
-        
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     public void NameEnter (string name)
@@ -22,4 +27,7 @@ public class BallPaddleManager : MonoBehaviour
         playerName = name;
         Debug.Log(playerName);
     }
+
+    
+
 }
