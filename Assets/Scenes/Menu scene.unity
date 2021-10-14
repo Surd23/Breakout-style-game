@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 242850363}
   - component: {fileID: 242850362}
   - component: {fileID: 242850361}
+  - component: {fileID: 242850364}
   m_Layer: 5
   m_Name: InputField
   m_TagString: Untagged
@@ -213,13 +214,13 @@ MonoBehaviour:
   m_LineType: 0
   m_HideMobileInput: 0
   m_CharacterValidation: 0
-  m_CharacterLimit: 0
+  m_CharacterLimit: 20
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2032178378}
-        m_TargetAssemblyTypeName: BallPaddleManager, Assembly-CSharp
-        m_MethodName: NameEnter
+      - m_Target: {fileID: 242850364}
+        m_TargetAssemblyTypeName: InputScript, Assembly-CSharp
+        m_MethodName: NameSet
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -278,6 +279,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 242850359}
   m_CullTransparentMesh: 1
+--- !u!114 &242850364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 242850359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a56f039e84b1c68468b89750de18a4fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &251083576
 GameObject:
   m_ObjectHideFlags: 0

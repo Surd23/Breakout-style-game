@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.IO;
 
 public class MainManager : MonoBehaviour
 {
@@ -11,17 +12,60 @@ public class MainManager : MonoBehaviour
     public Rigidbody Ball;
 
     public Text ScoreText;
+    public Text MaxScoreText;
     public GameObject GameOverText;
     
     private bool m_Started = false;
     private int m_Points;
+
+    public static int m_MaxPoints = 0;
+    public static string m_bestName;
     
     private bool m_GameOver = false;
+     
+    [System.Serializable] class SaveData
+    {
+        public string bestName;
+        public int maxPoint;
+    }
+
+    public void SaveSerializer()
+    {
+        SaveData data = new SaveData();
+        data.bestName = m_bestName;
+        data.maxPoint = m_MaxPoints;
+
+        string json = JsonUtility.ToJson(data);
+        File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
+    }
+
+    public void LoadSerializer()
+    {
+        string path = Application.persistentDataPath + "/savefile.json";
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            SaveData data = JsonUtility.FromJson<SaveData>(json);
+            m_bestName = data.bestName;
+            m_MaxPoints = data.maxPoint;
+        }
+    }
 
     
     // Start is called before the first frame update
     void Start()
     {
+        LoadSerializer();
+
+        m_Points = 0;
+
+        if (m_Points == m_MaxPoints)
+        {
+            MaxScoreText.text = $"Best Score: {BallPaddleManager.playerName}: {m_MaxPoints}";
+        }
+        else
+        MaxScoreText.text = $"Best Score: {m_bestName}: {m_MaxPoints}";
+
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
         
@@ -55,6 +99,7 @@ public class MainManager : MonoBehaviour
         }
         else if (m_GameOver)
         {
+            SaveSerializer();
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
@@ -66,6 +111,14 @@ public class MainManager : MonoBehaviour
     {
         m_Points += point;
         ScoreText.text = $"Score : {m_Points}";
+
+        if (m_Points > m_MaxPoints)
+        { 
+            m_MaxPoints = m_Points;
+            MaxScoreText.text = $"Best Score: {BallPaddleManager.playerName}: {m_MaxPoints}";
+            m_bestName = BallPaddleManager.playerName;
+        }
+
     }
 
     public void GameOver()

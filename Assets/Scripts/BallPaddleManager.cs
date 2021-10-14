@@ -9,23 +9,24 @@ public class BallPaddleManager : MonoBehaviour
 
     public static string playerName;
 
+    private void Start()
+    {
+        playerName = "No name";
+    }
+
     // Sigleton class that destroys other instance if they there are.
     private void Awake()
     {
-        if (Instance != null)
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);            
+        }
+        else
         {
             Destroy(gameObject);
             return;
         }
-
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-    }
-
-    public void NameEnter (string name)
-    {
-        playerName = name;
-        Debug.Log(playerName);
     }
 
     
